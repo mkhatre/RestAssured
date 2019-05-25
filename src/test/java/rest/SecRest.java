@@ -1,6 +1,10 @@
 package rest;
 import org.junit.*;
+
+import io.restassured.response.Response;
+
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 //import static io.restassured.RestAssured.given;
 
 public class SecRest {
@@ -22,7 +26,9 @@ public class SecRest {
 		when().
 			get(baseURI+city).
 		then().
-			statusCode(200);
+			statusCode(200).
+		and().
+			body(containsString("Hyderabad"));
 
 	}
 	
@@ -33,6 +39,19 @@ public class SecRest {
 			get(baseURI+city).
 		then().
 			contentType("application/json");
+	}
+	
+	@Test
+	public void test_city_temp() {
+		given().
+		when().
+			get(baseURI+city).
+		then().
+			body("City", equalTo("Hyderabad")).
+		and().
+			body("Temperature", equalTo("32.56 Degree celsius"));
+
+		
 	}
 	
 
